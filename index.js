@@ -35,9 +35,12 @@ client.on("messageCreate", (message) => {
 
   const command = body.shift();
 
-  let args = ["NO_ARGS"];
+  let args = [];
   if (body.length > 1) {
-    args = body[0].split(", ");
+    args = body[0].split(",");
+    args.forEach(e => {
+      e = e.trim();
+    })
   }
 
   const msg = message.content
@@ -52,11 +55,10 @@ client.on("messageCreate", (message) => {
     } else if (!msg.startsWith("(") || !msg.endsWith(")")) {
       message.channel.send(tokenError);
       return;
+    } else if (msg.match(/\(/g).length != 1 || msg.match(/\)/g).length != 1) {
+      message.channel.send(tokenError);
+      return;
     }
-    // } else if (msg.replace(/[^( || )]/, "").length > 2) {
-    //   message.channel.send(tokenError);
-    //   return;
-    // }
   }
   const cmdList = client.commands.map((e) => e)
 
@@ -72,7 +74,7 @@ client.on("messageCreate", (message) => {
       break;
     default:
       message.channel.send(
-        "Unknown method, please execute `dev.help();` for a list of commands."
+        "Unknown function, please execute `dev.help();` for a list of functions."
       );
   }
 });

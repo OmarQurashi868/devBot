@@ -4,11 +4,11 @@ module.exports = {
   args: -1,
   execute(message, args) {
     if (!args[0].length === 0) {
-      message.channel.send(" ");
+      message.channel.send("``` ```");
     } else if (!args[0].startsWith(`"`) || !args[0].endsWith(`"`)) {
-      message.channel.send(`${args} is undefined.`);
+      message.channel.send(`\`\`\`${args} is undefined.\`\`\``);
     } else {
-      message.channel.send(args[0].slice(0, -1).substring(1));
+      message.channel.send(`\`\`\`${args[0].slice(0, -1).substring(1)}\`\`\``);
     }
   },
 };

@@ -3,6 +3,10 @@ module.exports = {
   description: "Replies with pong...",
   args: 0,
   execute(message, args) {
-    message.channel.send("Pong!");
+    if (args.length > 0) {
+      message.channel.send("```This function does not take any arguments.```");
+      return;
+    }
+    message.channel.send("```Pong!```");
   },
 };
