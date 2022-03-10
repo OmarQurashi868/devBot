@@ -37,16 +37,10 @@ client.on("messageCreate", (message) => {
   const msgContent = message.content
     .substring(PREFIX.length + command.length + 1)
     .slice(0, -2);
-
-  const body = message.content.slice(PREFIX.length).split(/[()]/);
-  body.shift();
-
-  let args = [];
-  if (body.length > 1) {
-    args = body[0].split(",");
-    args.forEach((e) => {
-      e = e.trim();
-    });
+  
+  args = msgContent.split(/(?<=[^\\](?<=[ "'\n])),(?=[^\\](?=[ "'\n]))/)
+  for (let i = 0; i < args.length; i++) {
+    args[i] = args[i].trim().substring(1).slice(0, -1);
   }
 
   const msg = message.content
