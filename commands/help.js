@@ -1,34 +1,31 @@
 module.exports = {
   name: "help",
-  description: "Returns list of commands...",
-  args: 0,
+  description:
+    "Returns the description of the provided function, otherwise returns list of all functions...",
+  format: "dev.help([arg]);",
   execute(message, args, cmdList) {
-    if (args.length === 1) {
-      cmdList.forEach((cmd) => {
-        if (cmd.name === args[0]) {
-          message.channel.send(`\`\`\`${cmd.description}\`\`\``);
+    if (args.length === 1 && args[0] != "") {
+      for (let i = 0; i < cmdList.length; i++) {
+        if (cmdList[i].name === args[0]) {
+          message.channel.send(
+            `\`${cmdList[i].format}\`\n${cmdList[i].description}`
+          );
           return;
         }
-      });
+      }
       message.channel.send(
-        `\`\`\`Function with the name ${args[0]} was not found.\`\`\``
+        `Function with the name ${args[0]} was not found. Use \`dev.help();\` instead.`
       );
       return;
     } else if (args.length > 1) {
-      message.channel.send(
-        "```This function does not take that many arguments.```"
-      );
+      message.channel.send("This function does not take that many arguments.");
       return;
     }
-    const backticks = "```";
-    let content = "```js\n";
+    let content = "";
     cmdList.forEach((cmd) => {
-      const text = `dev.${cmd.name}(${cmd.args != 0 ? "args" : ""}); // ${
-        cmd.description
-      }\n`;
+      const text = `\`${cmd.format}\n\`${cmd.description}\n`;
       content = content + text;
     });
-    content = content + "```";
     message.channel.send(content);
   },
 };

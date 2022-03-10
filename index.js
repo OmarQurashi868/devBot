@@ -22,7 +22,8 @@ for (const file of cmdFiles) {
   client.commands.set(command.name, command);
 }
 
-const tokenError = "Unexpected token, format should be `dev.command(*args*);`";
+const tokenError =
+  "Unexpected token, format should be:\n`dev.command([args]);` or use `dev.help();` for a list of functions.";
 
 client.on("ready", () => {
   console.log("Bot is up and running...");
@@ -31,16 +32,21 @@ client.on("ready", () => {
 client.on("messageCreate", (message) => {
   if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
-  const body = message.content.slice(PREFIX.length).split(/[()]/);
+  const command = message.content.slice(PREFIX.length).split(/[()]/).shift();
 
-  const command = body.shift();
+  const msgContent = message.content
+    .substring(PREFIX.length + command.length + 1)
+    .slice(0, -2);
+
+  const body = message.content.slice(PREFIX.length).split(/[()]/);
+  body.shift();
 
   let args = [];
   if (body.length > 1) {
     args = body[0].split(",");
-    args.forEach(e => {
+    args.forEach((e) => {
       e = e.trim();
-    })
+    });
   }
 
   const msg = message.content
@@ -55,26 +61,41 @@ client.on("messageCreate", (message) => {
     } else if (!msg.startsWith("(") || !msg.endsWith(")")) {
       message.channel.send(tokenError);
       return;
-    } else if (msg.match(/\(/g).length != 1 || msg.match(/\)/g).length != 1) {
+    } else if (
+      (msg.match(/\(/g).length != 1 || msg.match(/\)/g).length != 1) &&
+      !msg.includes("```")
+    ) {
       message.channel.send(tokenError);
       return;
     }
   }
-  const cmdList = client.commands.map((e) => e)
+  const cmdList = client.commands.map((e) => e);
 
   switch (command) {
     case "ping":
       client.commands.get("ping").execute(message, args);
       break;
     case "log":
-      client.commands.get("log").execute(message, args);
+      client.commands.get("log").execute(message, args, message.guild.channels);
       break;
     case "help":
       client.commands.get("help").execute(message, args, cmdList);
       break;
+    case "mkBin":
+      client.commands.get("mkBin").execute(message, args, message.guildId);
+      break;
+    case "bin":
+      client.commands.get("bin").execute(message, args, message.guildId);
+      break;
+    case "bins":
+      client.commands.get("bins").execute(message, args, message.guildId);
+      break;
+    case "rmBin":
+      client.commands.get("rmBin").execute(message, args, message.guildId);
+      break;
     default:
       message.channel.send(
-        "Unknown function, please execute `dev.help();` for a list of functions."
+        "Unknown function, for a list of functions please execute: `dev.help();`"
       );
   }
 });
