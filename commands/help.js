@@ -14,7 +14,7 @@ module.exports = {
         }
       }
       message.channel.send(
-        `Function with the name ${args[0]} was not found. Use \`dev.help();\` instead.`
+        `Function with the name \`${args[0]}\` was not found. Use \`dev.help();\` instead.`
       );
       return;
     } else if (args.length > 1) {

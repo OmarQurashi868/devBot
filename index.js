@@ -13,6 +13,12 @@ const PREFIX = "dev.";
 
 client.commands = new Collection();
 
+const mongoose = require("mongoose");
+mongoose.connect(process.env.DATABASE_URL);
+const db = mongoose.connection;
+db.on("error", (error) => console.error(error));
+db.once("open", () => console.log("Database connected"));
+
 const cmdFiles = fs
   .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
@@ -37,16 +43,29 @@ client.on("messageCreate", (message) => {
   const msgContent = message.content
     .substring(PREFIX.length + command.length + 1)
     .slice(0, -2);
-  
-  args = msgContent.split(/(?<=[^\\](?<=[ "'\n])),(?=[^\\](?=[ "'\n]))/)
-  for (let i = 0; i < args.length; i++) {
-    args[i] = args[i].trim().substring(1).slice(0, -1);
-  }
 
+  let args = msgContent.split(/(?<=[^\\](?<=[ "'\n])),(?=[^\\](?=[ "'\n]))/);
+
+  if (!args[0].length == 0) {
+    for (let i = 0; i < args.length; i++) {
+      if (
+        (args[i].startsWith('"') || args[i].startsWith("'")) &&
+        (args[i].endsWith('"') || args[i].endsWith("'"))
+      ) {
+        args[i] = args[i].trim().substring(1).slice(0, -1).trim();
+        continue;
+      }
+      message.channel.send(
+        "All arguments must be wrapped in quotation marks (\" or '). If you want quotation marks in your text you can escape with them a double backslash \\\\\\\\."
+      );
+      return;
+    }
+  }
+  
   const msg = message.content
-    .slice(PREFIX.length)
-    .slice(command.length)
-    .slice(0, -1);
+  .slice(PREFIX.length)
+  .slice(command.length)
+  .slice(0, -1);
 
   if (message.content.startsWith(PREFIX) && !message.author.bot) {
     if (!message.content.endsWith(";")) {
