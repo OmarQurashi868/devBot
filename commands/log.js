@@ -13,7 +13,7 @@ module.exports = {
       }
     } else if (args.length === 2) {
       if (args[1].startsWith("<#") && args[1].endsWith(">")) {
-        const channelId = args[1].substring(3).slice(0, -2);
+        const channelId = args[1].substring(2).slice(0, -1);
         try {
           await channels.fetch(channelId).then(async (channel) => {
             try {

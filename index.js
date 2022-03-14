@@ -44,28 +44,10 @@ client.on("messageCreate", (message) => {
     .substring(PREFIX.length + command.length + 1)
     .slice(0, -2);
 
-  let args = msgContent.split(/(?<=[^\\](?<=[ "'\n])),(?=[^\\](?=[ "'\n]))/);
-
-  if (!args[0].length == 0) {
-    for (let i = 0; i < args.length; i++) {
-      if (
-        (args[i].startsWith('"') || args[i].startsWith("'")) &&
-        (args[i].endsWith('"') || args[i].endsWith("'"))
-      ) {
-        args[i] = args[i].trim().substring(1).slice(0, -1).trim();
-        continue;
-      }
-      message.channel.send(
-        "All arguments must be wrapped in quotation marks (\" or '). If you want quotation marks in your text you can escape with them a double backslash \\\\\\\\."
-      );
-      return;
-    }
-  }
-  
   const msg = message.content
-  .slice(PREFIX.length)
-  .slice(command.length)
-  .slice(0, -1);
+    .slice(PREFIX.length)
+    .slice(command.length)
+    .slice(0, -1);
 
   if (message.content.startsWith(PREFIX) && !message.author.bot) {
     if (!message.content.endsWith(";")) {
@@ -82,6 +64,26 @@ client.on("messageCreate", (message) => {
       return;
     }
   }
+
+  let args = msgContent.split(/(?<=[^\\](?<=[ "'\n])),(?=[^\\](?<=[ "'\n]))/);
+
+  if (!args[0].length == 0) {
+    for (let i = 0; i < args.length; i++) {
+      if (
+        (args[i].trim().startsWith('"') || args[i].trim().startsWith("'")) &&
+        (args[i].trim().endsWith('"') || args[i].trim().endsWith("'"))
+      ) {
+        args[i] = args[i].trim().substring(1).slice(0, -1).trim();
+        continue;
+      } else {
+        message.channel.send(
+          "All arguments must be wrapped in quotation marks ( \" or ' ). If you want quotation marks in your text you can escape them with a double backslash \\\\\\\\."
+        );
+        return;
+      }
+    }
+  }
+
   const cmdList = client.commands.map((e) => e);
 
   switch (command) {
