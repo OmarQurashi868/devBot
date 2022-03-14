@@ -10,16 +10,15 @@ module.exports = {
       return;
     }
     const givenName = args[0].trim();
-    const reqBin = Bin.findOne({ name: givenName });
+    const reqBin = await Bin.findOne({ name: givenName }).exec();
     if (reqBin) {
       try {
         await reqBin.remove();
-        message.channel.send("Bin deleted successfully.");
-        return;
       } catch (err) {
         message.channel.send(err.message);
         return;
       }
+      message.channel.send("Bin deleted successfully.");
     } else {
       message.channel.send(`Bin with name ${givenName} was not found.`);
       return;

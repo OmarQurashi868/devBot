@@ -11,18 +11,16 @@ module.exports = {
     }
     const givenName = args[0].trim();
     const givenMsg = args[1];
-    const checkResult = Bin.findOne({ name: givenName });
-    console.log(checkResult)
+    const checkResult = await Bin.findOne({ name: givenName }).exec();
     if (!checkResult) {
       const newBin = new Bin({ name: givenName, message: givenMsg });
       try {
         const savedBin = await newBin.save();
-        message.channel.send("Bin created successfully.");
-        return;
       } catch (err) {
         message.channel.send(err.message);
         return;
       }
+      message.channel.send("Bin created successfully.");
     } else {
       message.channel.send(`Bin with name ${givenName} already exists.`);
       return;

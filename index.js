@@ -108,6 +108,9 @@ client.on("messageCreate", (message) => {
     case "rmBin":
       client.commands.get("rmBin").execute(message, args, message.guildId);
       break;
+    case "info":
+      client.commands.get("info").execute(message, args);
+      break;
     default:
       message.channel.send(
         "Unknown function, for a list of functions please execute: `dev.help();`"

@@ -21,3 +21,5 @@ If the optional argument is provided, returns the description of the provided co
 Sends the provided message back again, optionally to the provided channel.
 ## dev.ping();
 Sends back a pong!
+## dev.info();
+Tells you about the bot.
