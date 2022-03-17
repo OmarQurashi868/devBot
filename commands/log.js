@@ -1,7 +1,7 @@
 module.exports = {
   name: "log",
   description: "Logs arguments...",
-  format: 'dev.log("text", [destination]);',
+  format: 'dev.log(text, [destination]);',
   async execute(message, args, channels) {
     if (args.length === 1) {
       if (args[0].length < 2) {
