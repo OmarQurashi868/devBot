@@ -1,6 +1,8 @@
 # Personal Discord bot for League of Devs server
 This is just a personal side-project to test a gimmick I had in mind. The gimmick is that the bot commands are formatted like functions...
 
+## Invite link: https://discord.com/api/oauth2/authorize?client_id=950387613695606824&permissions=3072&scope=bot
+
 # Commands
 
 # Bins
