@@ -4,7 +4,6 @@ module.exports = {
     "Returns the description of the provided function, otherwise returns list of all functions...",
   format: "dev.help([arg]);",
   execute(message, args, cmdList) {
-    console.log("I'm from helpjs");
     if (args.length === 1 && args[0] != "") {
       for (let i = 0; i < cmdList.length; i++) {
         if (cmdList[i].name === args[0]) {

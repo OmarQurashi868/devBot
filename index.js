@@ -36,6 +36,7 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", (message) => {
+  console.log("Hi i'm from index");
   if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
   const command = message.content.slice(PREFIX.length).split(/[()]/).shift();
