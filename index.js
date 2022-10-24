@@ -36,10 +36,7 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", (message) => {
-  console.log("Hi i'm from index");
-  console.log(message.content, message.content.startsWith(PREFIX))
   if (!message.content.startsWith(PREFIX) || message.author.bot) return;
-  console.log("message has prefix");
 
   const command = message.content.slice(PREFIX.length).split(/[()]/).shift();
 
@@ -87,7 +84,6 @@ client.on("messageCreate", (message) => {
     }
   }
 
-  console.log("after all the checks")
 
   const cmdList = client.commands.map((e) => e);
 
@@ -99,7 +95,6 @@ client.on("messageCreate", (message) => {
       client.commands.get("log").execute(message, args, message.guild.channels);
       break;
     case "help":
-      console.log("under switch case help")
       client.commands.get("help").execute(message, args, cmdList);
       break;
     case "mkBin":
